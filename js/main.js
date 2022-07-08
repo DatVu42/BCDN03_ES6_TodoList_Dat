@@ -13,6 +13,7 @@ let addNewTask = () => {
 
     renderTask(taskArr);
     document.getElementById("newTask").value = "";
+    document.getElementById("newTask").focus();
     // console.log(taskArr);
 }
 
@@ -24,7 +25,7 @@ let renderTask = (taskArr) =>  {
             todo += `
             <li>${task.content} 
                 <span>
-                    <span id="delTodo"><i class="far fa-trash-alt"></i></span>
+                    <span onclick="deleteTask('${task.id}')" id="delTodo"><i class="far fa-trash-alt"></i></span>
                     <span onclick="changeStatus('${task.id}')" id="chkComplete"><i class="fas fa-check-circle"></i></span>
                 </span>
             </li>
@@ -35,7 +36,7 @@ let renderTask = (taskArr) =>  {
             completed += `
             <li>${task.content} 
                 <span>
-                    <span id="delTodo"><i class="far fa-trash-alt"></i></span>
+                    <span onclick="deleteTask('${task.id}')" id="delTodo"><i class="far fa-trash-alt"></i></span>
                     <span onclick="changeStatus('${task.id}')" id="chkComplete"><i class="fas fa-check-circle"></i></span>
                 </span>
             </li>
@@ -56,4 +57,50 @@ let changeStatus = (id) => {
         result.status = "todo";
     }
     renderTask(newTaskArr);
+    showAll();
 }   
+
+let deleteTask = (id) => {
+    let newTaskArr = taskArr.reduce((newArr, taskObj, index) => {
+        if (taskObj.id != id) {
+            newArr.push(taskObj);
+        }
+        return newArr;
+    }, []);
+    taskArr = [...newTaskArr];
+    renderTask(taskArr);
+}
+
+let sapXepTangDan = () => {
+    let newTaskArr = taskArr.sort((nextTask, task) => {
+        let nextTaskName = nextTask.content.toLowerCase();
+        let taskName = task.content.toLowerCase();
+
+        if (nextTaskName > taskName) {
+            return 1;
+        }
+        if (nextTaskName < taskName) {
+            return -1;
+        }
+
+        return 1;
+    });
+
+    renderTask(newTaskArr);
+}
+
+let sapXepGiamDan = () => {
+    sapXepTangDan();
+    let newTaskArr = taskArr.reverse();
+    renderTask(newTaskArr);
+}
+
+let showTodos = () => {
+    let compELE = document.getElementById("completed");
+    compELE.classList.add("display");
+}
+
+let showAll = () => {
+    let compELE = document.getElementById("completed");
+    compELE.classList.remove("display");
+}

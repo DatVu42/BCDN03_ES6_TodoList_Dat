@@ -333,3 +333,7 @@ ul.todo#completed span{
   cursor: pointer;
   padding: 0 5px;
 }
+
+.display {
+  display: none;
+}
